@@ -1,0 +1,8 @@
+name: Photopass
+version: ${project.version}
+main: network.palace.photopass.Photopass
+api-version: 1.16
+prefix: Photo Pass
+authors: [ Cubits ]
+description: Ride Photos in game! Uses the Internal API to generate the images.
+website: https://palace.network/
