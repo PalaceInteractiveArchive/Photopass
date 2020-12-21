@@ -2,6 +2,7 @@ package network.palace.photopass.utils;
 
 import com.bergerkiller.bukkit.tc.signactions.SignAction;
 import network.palace.photopass.signactions.SignTakePhoto;
+import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,5 +15,6 @@ public class SignSetup {
     public static void init() {
         actions = new ArrayList<>();
         register(new SignTakePhoto());
+        Bukkit.getLogger().info("[PhotoPass] Registered Train Carts Sign");
     }
 }
