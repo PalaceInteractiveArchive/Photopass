@@ -13,9 +13,11 @@
 
     <description>Ride Photos in game! Uses the Internal API to generate the images.</description>
     <properties>
-        <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
     </properties>
+
     <url>https://palace.network/</url>
 
     <build>
@@ -27,11 +29,16 @@
                 <executions>
                     <execution>
                         <configuration>
+                            <forceJavacCompilerUse>true</forceJavacCompilerUse>
+                            <release>11</release>
                             <filters>
                                 <filter>
-                                    <artifact>network.palace.core</artifact>
+                                    <artifact>*:*</artifact>
                                     <excludes>
-                                        <exclude>META-INF/*.MF</exclude>
+                                        <exclude>module-info.class</exclude>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
                                         <exclude>plugin.yml</exclude>
                                     </excludes>
                                 </filter>
@@ -40,23 +47,34 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
+                    <source>11</source>
+                    <target>11</target>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.2.4</version>
+                <configuration>
+                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                    <filters>
+                        <filter>
+                            <artifact>*:*</artifact>
+                            <excludes>
+                                <exclude>module-info.class</exclude>
+                                <exclude>META-INF/*.SF</exclude>
+                                <exclude>META-INF/*.DSA</exclude>
+                                <exclude>META-INF/*.RSA</exclude>
+                            </excludes>
+                        </filter>
+                    </filters>
+                </configuration>
                 <executions>
                     <execution>
                         <phase>package</phase>
                         <goals>
                             <goal>shade</goal>
                         </goals>
-                        <configuration>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -70,13 +88,14 @@
     </build>
 
     <repositories>
+        <!-- Repo for access to BKCommonLib, TrainCarts -->
+        <repository>
+            <id>MG-Dev Jenkins CI Maven Repository</id>
+            <url>https://ci.mg-dev.eu/plugin/repository/everything</url>
+        </repository>
         <repository>
             <id>spigotmc-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-        </repository>
-        <repository>
-            <id>sonatype</id>
-            <url>https://oss.sonatype.org/content/groups/public/</url>
         </repository>
         <repository>
             <id>palace</id>
@@ -100,6 +119,16 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.12</version>
+        </dependency>
+        <dependency>
+            <groupId>com.bergerkiller.bukkit</groupId>
+            <artifactId>TrainCarts</artifactId>
+            <version>1.16.1-v1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.bergerkiller.bukkit</groupId>
+            <artifactId>BKCommonLib</artifactId>
+            <version>1.16.1-v1</version>
         </dependency>
     </dependencies>
 </project>
