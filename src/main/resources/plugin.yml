@@ -9,4 +9,4 @@ website: https://palace.network/
 depend:
   - Core
   - BKCommonLib
-  - TrainCarts
+  - Train_Carts
