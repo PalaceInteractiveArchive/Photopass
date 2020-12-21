@@ -2,133 +2,78 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+<modelVersion>4.0.0</modelVersion>
 
-    <groupId>network.palace</groupId>
-    <artifactId>photopass</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <packaging>jar</packaging>
+<groupId>network.palace</groupId>
+<artifactId>Photopass</artifactId>
+<version>1.0.0</version>
+<repositories>
+    <!-- Repo for access to BKCommonLib, TrainCarts -->
+    <repository>
+        <id>MG-Dev Jenkins CI Maven Repository</id>
+        <url>https://ci.mg-dev.eu/plugin/repository/everything</url>
+    </repository>
+    <repository>
+        <id>palace</id>
+        <url>https://repo.palace.network/nexus/content/repositories/releases/</url>
+    </repository>
+    <repository>
+        <id>spigot-repo</id>
+        <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+    </repository>
+</repositories>
+<dependencies>
+    <dependency>
+        <groupId>org.spigotmc</groupId>
+        <artifactId>spigot-api</artifactId>
+        <version>1.12.2-R0.1-SNAPSHOT</version>
+        <type>jar</type>
+    </dependency>
+    <dependency>
+        <groupId>network.palace</groupId>
+        <artifactId>Core</artifactId>
+        <version>2.6.4</version>
+        <type>jar</type>
+    </dependency>
+    <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <version>1.18.12</version>
+        <type>jar</type>
+    </dependency>
+    <dependency>
+        <groupId>com.bergerkiller.bukkit</groupId>
+        <artifactId>TrainCarts</artifactId>
+        <version>1.16.1-v1</version>
+        <type>jar</type>
+    </dependency>
+    <dependency>
+        <groupId>com.bergerkiller.bukkit</groupId>
+        <artifactId>BKCommonLib</artifactId>
+        <version>1.16.1-v1</version>
+        <type>jar</type>
+    </dependency>
+</dependencies>
 
-    <name>Photopass</name>
+<properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
+</properties>
 
-    <description>Ride Photos in game! Uses the Internal API to generate the images.</description>
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
-    </properties>
-
-    <url>https://palace.network/</url>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
-                <executions>
-                    <execution>
-                        <configuration>
-                            <forceJavacCompilerUse>true</forceJavacCompilerUse>
-                            <release>11</release>
-                            <filters>
-                                <filter>
-                                    <artifact>*:*</artifact>
-                                    <excludes>
-                                        <exclude>module-info.class</exclude>
-                                        <exclude>META-INF/*.SF</exclude>
-                                        <exclude>META-INF/*.DSA</exclude>
-                                        <exclude>META-INF/*.RSA</exclude>
-                                        <exclude>plugin.yml</exclude>
-                                    </excludes>
-                                </filter>
-                            </filters>
-                        </configuration>
-                    </execution>
-                </executions>
-                <configuration>
-                    <source>11</source>
-                    <target>11</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.4</version>
-                <configuration>
-                    <createDependencyReducedPom>false</createDependencyReducedPom>
-                    <filters>
-                        <filter>
-                            <artifact>*:*</artifact>
-                            <excludes>
-                                <exclude>module-info.class</exclude>
-                                <exclude>META-INF/*.SF</exclude>
-                                <exclude>META-INF/*.DSA</exclude>
-                                <exclude>META-INF/*.RSA</exclude>
-                            </excludes>
-                        </filter>
-                    </filters>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
-    </build>
-
-    <repositories>
-        <!-- Repo for access to BKCommonLib, TrainCarts -->
-        <repository>
-            <id>MG-Dev Jenkins CI Maven Repository</id>
-            <url>https://ci.mg-dev.eu/plugin/repository/everything</url>
-        </repository>
-        <repository>
-            <id>spigotmc-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-        </repository>
-        <repository>
-            <id>palace</id>
-            <url>https://repo.palace.network/nexus/content/repositories/releases/</url>
-        </repository>
-    </repositories>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
-            <version>1.16.4-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>network.palace</groupId>
-            <artifactId>Core</artifactId>
-            <version>2.6.4</version>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.12</version>
-        </dependency>
-        <dependency>
-            <groupId>com.bergerkiller.bukkit</groupId>
-            <artifactId>TrainCarts</artifactId>
-            <version>1.16.1-v1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.bergerkiller.bukkit</groupId>
-            <artifactId>BKCommonLib</artifactId>
-            <version>1.16.1-v1</version>
-        </dependency>
-    </dependencies>
+<build>
+    <finalName>${project.artifactId}</finalName>
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.8.1</version>
+            <configuration>
+                <compilerArgs>
+                    <arg>-parameters</arg>
+                </compilerArgs>
+            </configuration>
+        </plugin>
+    </plugins>
+</build>
 </project>

@@ -1,22 +1,17 @@
 package network.palace.photopass;
 
 import lombok.Getter;
-import network.palace.core.Core;
-import network.palace.core.player.CPlayer;
 import network.palace.core.plugin.Plugin;
 import network.palace.core.plugin.PluginInfo;
-import network.palace.photopass.utils.SignSetup;
 
-
-@PluginInfo(name = "Photopass", version = "1.0.0", depend = {"Core"}, canReload = true, apiversion = "1.12")
+@PluginInfo(name = "PhotoPass", version = "1.0.0", depend = "Core", canReload = true)
 public class Photopass extends Plugin {
     @Getter private static Photopass instance;
 
     @Override
-    public void onPluginEnable() {
+    protected void onPluginEnable() throws Exception {
         instance = this;
-        registerCommands();
-        SignSetup.init();
+        getLogger().info("Photopass loaded!");
     }
 
     @Override
@@ -24,8 +19,6 @@ public class Photopass extends Plugin {
 
     }
 
-    private void registerCommands() {
-
-    }
-
 }
+
+

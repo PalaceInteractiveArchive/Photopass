@@ -6,3 +6,7 @@ prefix: Photo Pass
 authors: [ Cubits ]
 description: Ride Photos in game! Uses the Internal API to generate the images.
 website: https://palace.network/
+depend:
+  - Core
+  - BKCommonLib
+  - TrainCarts
