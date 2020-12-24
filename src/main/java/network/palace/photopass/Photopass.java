@@ -1,6 +1,6 @@
 package network.palace.photopass;
 
-import com.bergerkiller.bukkit.tc.signactions.SignAction;
+import static com.bergerkiller.bukkit.tc.signactions.SignAction.register;
 import lombok.Getter;
 import network.palace.core.plugin.Plugin;
 import network.palace.core.plugin.PluginInfo;
@@ -28,8 +28,7 @@ public class Photopass extends Plugin {
     }
 
     public void signSetup() {
-        SignAction.register(new SignTakePhoto());
-
+        register(new SignTakePhoto());
     }
 }
 

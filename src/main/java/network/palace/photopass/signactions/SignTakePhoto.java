@@ -7,7 +7,7 @@ import com.bergerkiller.bukkit.tc.signactions.SignAction;
 import com.bergerkiller.bukkit.tc.signactions.SignActionType;
 import com.bergerkiller.bukkit.tc.utils.SignBuildOptions;
 
-import org.bukkit.Bukkit;
+import network.palace.core.Core;
 
 public class SignTakePhoto extends SignAction {
 
@@ -22,10 +22,17 @@ public class SignTakePhoto extends SignAction {
         if (info.isTrainSign() && info.isAction(SignActionType.REDSTONE_ON, SignActionType.GROUP_ENTER) && info.hasGroup()) {
             switch (info.getLine(2)) {
                 case "sm":
-                    Bukkit.getLogger().info("Yes it worked!");
+                    Core.logInfo("Generating Ridephoto for 'sm'");
+                    if (info.getMembers().size() > 0) {
+                        info.getMembers().forEach(player -> {
+                            Core.logInfo(player.getLocalizedName());
+                        });
+                    } else {
+                        Core.logInfo("Train was empty, generating empty");
+                    }
                     break;
                 default:
-                    Bukkit.getLogger().info("Yes it worked but not sm!");
+                    Core.logInfo("Photopass sign with invalid setup: " + info.getLine(2));
                     break;
             }
         }
