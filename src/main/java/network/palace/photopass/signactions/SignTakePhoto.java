@@ -8,6 +8,7 @@ import com.bergerkiller.bukkit.tc.signactions.SignActionType;
 import com.bergerkiller.bukkit.tc.utils.SignBuildOptions;
 
 import network.palace.core.Core;
+import network.palace.photopass.handlers.rides.SpaceMountain;
 
 public class SignTakePhoto extends SignAction {
 
@@ -23,13 +24,8 @@ public class SignTakePhoto extends SignAction {
             switch (info.getLine(2)) {
                 case "sm":
                     Core.logInfo("Generating Ridephoto for 'sm'");
-                    if (info.getMembers().size() > 0) {
-                        info.getMembers().forEach(player -> {
-                            Core.logInfo(player.getLocalizedName());
-                        });
-                    } else {
-                        Core.logInfo("Train was empty, generating empty");
-                    }
+                    SpaceMountain sm = new SpaceMountain();
+                    sm.createRidePhoto(info);
                     break;
                 default:
                     Core.logInfo("Photopass sign with invalid setup: " + info.getLine(2));
