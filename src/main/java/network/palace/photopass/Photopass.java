@@ -7,7 +7,7 @@ import network.palace.core.plugin.PluginInfo;
 import network.palace.photopass.signactions.SignTakePhoto;
 
 
-@PluginInfo(name = "PhotoPass", version = "1.0.0", depend = "Core", canReload = true)
+@PluginInfo(name = "PhotoPass", version = "1.0.0", depend = "Core,Train_Carts,BKCommonLib", canReload = true)
 public class Photopass extends Plugin {
     @Getter private static Photopass instance;
 
