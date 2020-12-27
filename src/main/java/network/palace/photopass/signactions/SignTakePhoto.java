@@ -10,6 +10,12 @@ import com.bergerkiller.bukkit.tc.utils.SignBuildOptions;
 import network.palace.core.Core;
 import network.palace.photopass.handlers.rides.SpaceMountain;
 
+/**
+ * @author Tom
+ * @since 23/12/2020
+ * @version 1.0.0
+*/
+
 public class SignTakePhoto extends SignAction {
 
     @Override
@@ -38,8 +44,8 @@ public class SignTakePhoto extends SignAction {
     public boolean build(SignChangeActionEvent event) {
         return SignBuildOptions.create()
                 .setPermission(Permission.BUILD_SPAWNER) // We don't have a specific permission, so putting it under this will do (for now)
-                .setName("train photopass sign")
-                .setDescription("generates a photo based on the parsed arguments")
+                .setName("PhotoPass Sign")
+                .setDescription("generate a photo based on the parsed arguments")
                 .setHelpURL("https://tomr.dev/pal/tcc/photopass")
                 .handle(event.getPlayer());
     }
