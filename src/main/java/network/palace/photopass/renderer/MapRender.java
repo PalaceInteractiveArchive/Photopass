@@ -72,7 +72,7 @@ public class MapRender
         {
             Entity e = arrayOfEntity[i];
             if (((e instanceof ItemFrame)) &&
-                    (e.getLocation().getBlock().getLocation().distance(loc) <= 1.1D)) {
+                    (e.getLocation().getBlock().getLocation().distance(loc) <= 0.9D)) {
                 return (ItemFrame)e;
             }
         }

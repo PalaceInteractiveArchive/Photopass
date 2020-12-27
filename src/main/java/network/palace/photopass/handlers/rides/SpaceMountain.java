@@ -27,7 +27,7 @@ public class SpaceMountain {
     FileConfiguration config = instance.getConfig();
     File smConfigFile = new File(instance.getDataFolder(), File.separator + "rides/sm.yml");
     FileConfiguration rideData = YamlConfiguration.loadConfiguration(smConfigFile);
-    Integer frameNum = 0;
+    public static Integer frameNum = 0;
 
     public synchronized void createRidePhoto(SignActionEvent info) {
         Bukkit.getScheduler().runTaskAsynchronously(instance, () -> {
@@ -55,5 +55,9 @@ public class SpaceMountain {
         Location frameLoc = new Location(Bukkit.getWorld(rideData.getString("world")), rideData.getDouble("frames." + frameNum.toString() + ".x"), rideData.getDouble("frames." + frameNum.toString() + ".y"), rideData.getDouble("frames." + frameNum.toString() + ".z"));
         makeMap.generatePhoto(frameLoc, buffImg);
         ChatUtil.sendPhotopassMessage(p, "Smile! Your Photo will be available at the exit!");
+        frameNum++;
+        if (frameNum > 11) {
+            frameNum = 0;
+        }
     }
 }
