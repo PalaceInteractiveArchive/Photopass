@@ -30,7 +30,7 @@ public class SpaceMountain {
     Integer frameNum = 0;
 
     public synchronized void createRidePhoto(SignActionEvent info) {
-        Bukkit.getScheduler().runTask(instance, () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(instance, () -> {
             if (info.getGroup().hasPassenger()) {
                 info.getGroup().forEach(x -> {
                     x.getEntity().getPlayerPassengers().forEach(y -> {
