@@ -100,7 +100,7 @@ public class MapRender
                 return;
             }
             this.rendered.add(p.getName());
-
+            view.setScale(MapView.Scale.FARTHEST);
             canvas.drawImage(0, 0, this.image);
         }
     }
