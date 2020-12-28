@@ -6,6 +6,7 @@ import network.palace.photopass.Photopass;
 import network.palace.photopass.handlers.ImgurUpload;
 import network.palace.photopass.renderer.MapRender;
 import network.palace.photopass.utils.ChatUtil;
+import network.palace.photopass.utils.DateFormat;
 import network.palace.photopass.utils.MongoManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -78,8 +79,9 @@ public class SpaceMountain {
                 players.forEach(user -> {
                     playerArr.add(user.getUniqueId().toString());
                 });
+                String info = "Space Mountain on " + Core.getInstanceName() + "! Date of Photo: " + DateFormat.formattedTime();
                 MongoManager mm = new MongoManager();
-                mm.createPhoto(url, playerArr, "Test");
+                mm.createPhoto(url, playerArr, info);
             }
             catch (Exception e) {
                 e.printStackTrace();
