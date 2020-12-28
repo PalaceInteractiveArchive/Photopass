@@ -4,24 +4,31 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import network.palace.core.Core;
 import okhttp3.*;
-import org.json.simple.JSONObject;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.RenderedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Base64;
 
 public class ImgurUpload {
 
     public String convertToBinary(Image img) throws IOException {
-        ByteArrayOutputStream b = new ByteArrayOutputStream();
-        ImageIO.write((RenderedImage) img, "jpg", b);
-        byte[] jpgByteArray = b.toByteArray();
-        StringBuilder sb = new StringBuilder();
-        for (byte by : jpgByteArray)
-            sb.append(Integer.toBinaryString(by & 0xFF));
-        return sb.toString();
+        String imageString = null;
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+
+        try {
+            ImageIO.write((RenderedImage) img, "png", bos);
+            byte[] imageBytes = bos.toByteArray();
+
+            imageString = Base64.getEncoder().encodeToString(imageBytes);
+
+            bos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return imageString;
     }
 
     public boolean uploadImage(String clientID, String imgData) throws IOException {
@@ -39,7 +46,7 @@ public class ImgurUpload {
         Response response = client.newCall(request).execute();
         String resData = response.body().string();
         JsonObject jsonData = new JsonParser().parse(resData).getAsJsonObject();
-        Core.logInfo(jsonData.get("data").getAsJsonObject().get("link").getAsString());
+        Core.logInfo(jsonData.get("data").getAsString());
         return true;
     }
 

@@ -11,7 +11,7 @@ import java.awt.image.BufferedImage;
  */
 
 public class ImageUtils {
-    public static Image resizeImage(Image originalImage, int targetWidth, int targetHeight) throws Exception {
+    public static Image resizeImage(Image originalImage, int targetWidth, int targetHeight) {
         return originalImage.getScaledInstance(targetWidth, targetHeight, Image.SCALE_SMOOTH);
     }
 

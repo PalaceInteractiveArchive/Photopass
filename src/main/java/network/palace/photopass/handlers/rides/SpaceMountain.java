@@ -6,7 +6,6 @@ import network.palace.photopass.Photopass;
 import network.palace.photopass.handlers.ImgurUpload;
 import network.palace.photopass.renderer.MapRender;
 import network.palace.photopass.utils.ChatUtil;
-import network.palace.photopass.utils.ImageUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -16,6 +15,7 @@ import org.bukkit.entity.Player;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static network.palace.photopass.utils.ImageUtils.convertToBufferedImage;
 import static network.palace.photopass.utils.ImageUtils.resizeImage;
@@ -37,12 +37,16 @@ public class SpaceMountain {
         Bukkit.getScheduler().runTaskAsynchronously(instance, () -> {
             if (info.getGroup().hasPassenger()) {
                 info.getGroup().forEach(x -> {
+                    AtomicReference<Boolean> upload = new AtomicReference<>(true);
                     x.getEntity().getPlayerPassengers().forEach(y -> {
-                        try {
-                            requestSMPhoto(y.getDisplayName(), y);
-                        } catch (Exception e) {
-                            Core.logInfo("[PhotoPass] Error Rendering SpaceMountain Picture: " + e.getLocalizedMessage());
-                        }
+//                        try {
+                            requestSMPhoto(y.getDisplayName(), y, upload.get());
+                            if (upload.get()) {
+                                upload.set(false);
+                            }
+//                        } catch (Exception e) {
+//                            Core.logInfo("[PhotoPass] Error Rendering SpaceMountain Picture: " + e.getLocalizedMessage());
+//                        }
                     });
                 });
             } else {
@@ -51,7 +55,7 @@ public class SpaceMountain {
         });
     }
 
-    private void requestSMPhoto(String name, Player p) throws Exception {
+    private void requestSMPhoto(String name, Player p, Boolean uploadImgur) {
         MapRender makeMap = new MapRender();
         Image img = makeMap.getImageFromAPI("SpaceMountain", name, config.getString("apiAccess"));
         BufferedImage buffImg =  convertToBufferedImage(resizeImage(img, 128, 128));
@@ -62,8 +66,15 @@ public class SpaceMountain {
         if (frameNum > 11) {
             frameNum = 0;
         }
-        ImgurUpload upload = new ImgurUpload();
-        String bin = upload.convertToBinary(img);
-        upload.uploadImage(config.getString("imgurKey"), bin);
+        if (uploadImgur) {
+            try {
+                ImgurUpload upload = new ImgurUpload();
+                String bin = upload.convertToBinary(img);
+                upload.uploadImage(config.getString("imgurKey"), bin);
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
