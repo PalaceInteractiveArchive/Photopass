@@ -8,7 +8,7 @@ import com.bergerkiller.bukkit.tc.signactions.SignActionType;
 import com.bergerkiller.bukkit.tc.utils.SignBuildOptions;
 
 import network.palace.core.Core;
-import network.palace.photopass.handlers.rides.SpaceMountain;
+import network.palace.photopass.handlers.rides.*;
 
 /**
  * @author Tom
@@ -29,12 +29,17 @@ public class SignTakePhoto extends SignAction {
         if (info.isTrainSign() && info.isAction(SignActionType.REDSTONE_ON, SignActionType.GROUP_ENTER) && info.hasGroup()) {
             switch (info.getLine(2)) {
                 case "sm":
-                    Core.logInfo("Generating Ridephoto for 'sm'");
+                    Core.logInfo("[Photo Pass] Generating Ridephoto for 'sm'");
                     SpaceMountain sm = new SpaceMountain();
                     sm.createRidePhoto(info);
                     break;
+                case "tt":
+                    Core.logInfo("[Photo Pass] Generating Ridephoto for 'tt'");
+                    TestTrack tt = new TestTrack();
+                    tt.createRidePhoto(info);
+                    break;
                 default:
-                    Core.logInfo("Photopass sign with invalid setup: " + info.getLine(2));
+                    Core.logInfo("[Photo Pass] Photopass sign with invalid setup: " + info.getLine(2));
                     break;
             }
         }

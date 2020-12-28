@@ -26,14 +26,14 @@ import static network.palace.photopass.utils.ImageUtils.resizeImage;
 
 /**
  * @author Tom
- * @since 23/12/2020
+ * @since 28/12/2020
  * @version 1.0.0
  */
 
-public class SpaceMountain {
+public class TestTrack {
     Photopass instance = Photopass.getPlugin(network.palace.photopass.Photopass.class);
     FileConfiguration config = instance.getConfig();
-    File smConfigFile = new File(instance.getDataFolder(), File.separator + "rides/sm.yml");
+    File smConfigFile = new File(instance.getDataFolder(), File.separator + "rides/tt.yml");
     FileConfiguration rideData = YamlConfiguration.loadConfiguration(smConfigFile);
     public static Integer frameNum = 0;
 
@@ -41,13 +41,14 @@ public class SpaceMountain {
         Bukkit.getScheduler().runTaskAsynchronously(instance, () -> {
             if (info.getGroup().hasPassenger()) {
                 info.getGroup().forEach(x -> {
-                    AtomicReference<Boolean> upload = new AtomicReference<>(true);
-                    x.getEntity().getPlayerPassengers().forEach(y -> {
-                            requestSMPhoto(y.getDisplayName(), y, upload.get(), x.getEntity().getPlayerPassengers());
-                            if (upload.get()) {
-                                upload.set(false);
-                            }
+                    if (x.getEntity().getPlayerPassengers().size() != 0) {
+                    ArrayList<String> names = new ArrayList<String>();
+                    x.getEntity().getPlayerPassengers().forEach(user -> {
+                        names.add(user.getDisplayName());
                     });
+                    String namesList = String.join(",", names);
+                    requestTTPhoto(true, x.getEntity().getPlayerPassengers(), namesList);
+                    }
                 });
             } else {
                 Core.logInfo("[PhotoPass] Train was empty, generating empty");
@@ -55,15 +56,18 @@ public class SpaceMountain {
         });
     }
 
-    private void requestSMPhoto(String name, Player p, Boolean uploadImgur, List<Player> players) {
+    private void requestTTPhoto(Boolean uploadImgur, List<Player> players, String namesList) {
         MapRender makeMap = new MapRender();
-        Image img = makeMap.getImageFromAPI("SpaceMountain", name, config.getString("apiAccess"));
+        Core.logInfo(namesList);
+        Image img = makeMap.getImageFromAPI("TestTrack", namesList, config.getString("apiAccess"));
         BufferedImage buffImg =  convertToBufferedImage(resizeImage(img, 128, 128));
         Location frameLoc = new Location(Bukkit.getWorld(rideData.getString("world")), rideData.getDouble("frames." + frameNum.toString() + ".x"), rideData.getDouble("frames." + frameNum.toString() + ".y"), rideData.getDouble("frames." + frameNum.toString() + ".z"));
         makeMap.generatePhoto(frameLoc, buffImg);
-        ChatUtil.sendPhotopassMessage(p, "Smile! Your Photo will be available at the exit!");
+        players.forEach(user -> {
+            ChatUtil.sendPhotopassMessage(user, "Smile! Your Photo will be available at the exit!");
+        });
         frameNum++;
-        if (frameNum > 11) {
+        if (frameNum > 5) {
             frameNum = 0;
         }
         if (uploadImgur) {
@@ -75,13 +79,13 @@ public class SpaceMountain {
                 players.forEach(user -> {
                     playerArr.add(user.getUniqueId().toString());
                 });
-                String info = "Space Mountain on " + Core.getInstanceName() + "! Date of Photo: " + DateFormat.formattedTime();
+                String info = "Test Track on " + Core.getInstanceName() + "! Date of Photo: " + DateFormat.formattedTime();
                 MongoManager mm = new MongoManager();
                 mm.createPhoto(url, playerArr, info);
             }
             catch (Exception e) {
                 e.printStackTrace();
-                Core.logInfo("[PhotoPass] Error Uploading SpaceMountain Picture: " + e.getLocalizedMessage());
+                Core.logInfo("[PhotoPass] Error Uploading TestTrack Picture: " + e.getLocalizedMessage());
             }
         }
     }
