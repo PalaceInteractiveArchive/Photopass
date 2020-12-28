@@ -31,7 +31,7 @@ public class ImgurUpload {
         return imageString;
     }
 
-    public boolean uploadImage(String clientID, String imgData) throws IOException {
+    public String uploadImage(String clientID, String imgData) throws IOException {
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         MediaType mediaType = MediaType.parse("text/plain");
@@ -46,8 +46,8 @@ public class ImgurUpload {
         Response response = client.newCall(request).execute();
         String resData = response.body().string();
         JsonObject jsonData = new JsonParser().parse(resData).getAsJsonObject();
-        Core.logInfo(jsonData.get("data").getAsString());
-        return true;
+        String url = jsonData.get("data").getAsJsonObject().get("link").getAsString();
+        return url;
     }
 
 }
