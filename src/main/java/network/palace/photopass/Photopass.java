@@ -39,6 +39,7 @@ public class Photopass extends Plugin {
     public void configSetup() {
         FileConfiguration config = this.getConfig();
         config.addDefault("apiAccess", "");
+        config.addDefault("imgurKey", "");
         saveDefaultConfig();
     }
 }

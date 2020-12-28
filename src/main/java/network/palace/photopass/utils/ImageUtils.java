@@ -11,11 +11,11 @@ import java.awt.image.BufferedImage;
  */
 
 public class ImageUtils {
-    public Image resizeImage(Image originalImage, int targetWidth, int targetHeight) throws Exception {
+    public static Image resizeImage(Image originalImage, int targetWidth, int targetHeight) throws Exception {
         return originalImage.getScaledInstance(targetWidth, targetHeight, Image.SCALE_SMOOTH);
     }
 
-    public BufferedImage convertToBufferedImage(Image image)
+    public static BufferedImage convertToBufferedImage(Image image)
     {
         BufferedImage newImage = new BufferedImage(
                 image.getWidth(null), image.getHeight(null),

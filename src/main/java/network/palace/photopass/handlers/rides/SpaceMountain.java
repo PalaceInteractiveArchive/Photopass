@@ -3,6 +3,7 @@ package network.palace.photopass.handlers.rides;
 import com.bergerkiller.bukkit.tc.events.SignActionEvent;
 import network.palace.core.Core;
 import network.palace.photopass.Photopass;
+import network.palace.photopass.handlers.ImgurUpload;
 import network.palace.photopass.renderer.MapRender;
 import network.palace.photopass.utils.ChatUtil;
 import network.palace.photopass.utils.ImageUtils;
@@ -15,6 +16,9 @@ import org.bukkit.entity.Player;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+
+import static network.palace.photopass.utils.ImageUtils.convertToBufferedImage;
+import static network.palace.photopass.utils.ImageUtils.resizeImage;
 
 /**
  * @author Tom
@@ -49,9 +53,8 @@ public class SpaceMountain {
 
     private void requestSMPhoto(String name, Player p) throws Exception {
         MapRender makeMap = new MapRender();
-        ImageUtils imgUtils = new ImageUtils();
         Image img = makeMap.getImageFromAPI("SpaceMountain", name, config.getString("apiAccess"));
-        BufferedImage buffImg =  imgUtils.convertToBufferedImage(imgUtils.resizeImage(img, 128, 128));
+        BufferedImage buffImg =  convertToBufferedImage(resizeImage(img, 128, 128));
         Location frameLoc = new Location(Bukkit.getWorld(rideData.getString("world")), rideData.getDouble("frames." + frameNum.toString() + ".x"), rideData.getDouble("frames." + frameNum.toString() + ".y"), rideData.getDouble("frames." + frameNum.toString() + ".z"));
         makeMap.generatePhoto(frameLoc, buffImg);
         ChatUtil.sendPhotopassMessage(p, "Smile! Your Photo will be available at the exit!");
@@ -59,5 +62,8 @@ public class SpaceMountain {
         if (frameNum > 11) {
             frameNum = 0;
         }
+        ImgurUpload upload = new ImgurUpload();
+        String bin = upload.convertToBinary(img);
+        upload.uploadImage(config.getString("imgurKey"), bin);
     }
 }
