@@ -2,7 +2,6 @@ package network.palace.photopass.handlers;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import network.palace.core.Core;
 import okhttp3.*;
 
 import javax.imageio.ImageIO;

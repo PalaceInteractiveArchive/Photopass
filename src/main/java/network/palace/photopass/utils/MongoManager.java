@@ -8,8 +8,13 @@ import org.bson.BsonString;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
-import java.util.ArrayList;
 import java.util.List;
+
+/**
+ * @author Tom
+ * @since 28/12/2020
+ * @version 1.0.0
+ */
 
 public class MongoManager {
     @Getter public final MongoCollection<Document> photosCollection;
