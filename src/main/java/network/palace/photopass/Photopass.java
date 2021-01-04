@@ -4,6 +4,7 @@ import static com.bergerkiller.bukkit.tc.signactions.SignAction.register;
 import lombok.Getter;
 import network.palace.core.plugin.Plugin;
 import network.palace.core.plugin.PluginInfo;
+import network.palace.photopass.commands.PhotoPassCommand;
 import network.palace.photopass.signactions.SignTakePhoto;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -21,6 +22,7 @@ public class Photopass extends Plugin {
     @Override
     protected void onPluginEnable() throws Exception {
         instance = this;
+        registerCommands();
         signSetup();
         configSetup();
         getLogger().info("Photopass loaded!");
@@ -34,6 +36,10 @@ public class Photopass extends Plugin {
 
     public void signSetup() {
         register(new SignTakePhoto());
+    }
+
+    public void registerCommands() {
+        registerCommand(new PhotoPassCommand());
     }
 
     public void configSetup() {

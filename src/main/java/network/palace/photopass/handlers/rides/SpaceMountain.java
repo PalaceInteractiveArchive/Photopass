@@ -39,14 +39,17 @@ public class SpaceMountain {
 
     public synchronized void createRidePhoto(SignActionEvent info) {
         Bukkit.getScheduler().runTaskAsynchronously(instance, () -> {
+            MongoManager mm = new MongoManager();
             if (info.getGroup().hasPassenger()) {
                 info.getGroup().forEach(x -> {
                     AtomicReference<Boolean> upload = new AtomicReference<>(true);
                     x.getEntity().getPlayerPassengers().forEach(y -> {
+                        if (mm.checkToggle(y)) {
                             requestSMPhoto(y.getDisplayName(), y, upload.get(), x.getEntity().getPlayerPassengers());
                             if (upload.get()) {
                                 upload.set(false);
                             }
+                        }
                     });
                 });
             } else {

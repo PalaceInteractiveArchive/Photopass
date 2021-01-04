@@ -39,12 +39,15 @@ public class TestTrack {
 
     public synchronized void createRidePhoto(SignActionEvent info) {
         Bukkit.getScheduler().runTaskAsynchronously(instance, () -> {
+            MongoManager mm = new MongoManager();
             if (info.getGroup().hasPassenger()) {
                 info.getGroup().forEach(x -> {
                     if (x.getEntity().getPlayerPassengers().size() != 0) {
                     ArrayList<String> names = new ArrayList<String>();
                     x.getEntity().getPlayerPassengers().forEach(user -> {
-                        names.add(user.getDisplayName());
+                        if (mm.checkToggle(user)) {
+                            names.add(user.getDisplayName());
+                        }
                     });
                     String namesList = String.join(",", names);
                     requestTTPhoto(true, x.getEntity().getPlayerPassengers(), namesList);
