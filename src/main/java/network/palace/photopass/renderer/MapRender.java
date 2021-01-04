@@ -33,7 +33,7 @@ public class MapRender
     {
         try
         {
-            return ImageIO.read(new URL("https://internal-api.palace.network/ridephoto/create/" + rideName + "/" + pString + "?access=" + accessToken));
+            return ImageIO.read(new URL("https://internal-api.palace.network/minecraft/ridephoto/create/" + rideName + "/" + pString + "?access=" + accessToken));
         }
         catch (Exception e)
         {
