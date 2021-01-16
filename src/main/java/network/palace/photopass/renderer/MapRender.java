@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import network.palace.core.Core;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -65,17 +66,22 @@ public class MapRender
 
     private ItemFrame getFrame(Location loc)
     {
-        Entity[] arrayOfEntity;
-        int j = (arrayOfEntity = loc.getChunk().getEntities()).length;
-        for (int i = 0; i < j; i++)
-        {
-            Entity e = arrayOfEntity[i];
-            if (((e instanceof ItemFrame)) &&
-                    (e.getLocation().getBlock().getLocation().distance(loc) <= 0.9D)) {
-                return (ItemFrame)e;
+        try {
+            Entity[] arrayOfEntity;
+            int j = (arrayOfEntity = loc.getChunk().getEntities()).length;
+            for (int i = 0; i < j; i++)
+            {
+                Entity e = arrayOfEntity[i];
+                if (((e instanceof ItemFrame)) &&
+                        (e.getLocation().getBlock().getLocation().distance(loc) <= 0.9D)) {
+                    return (ItemFrame)e;
+                }
             }
+            return null;
+        } catch (Exception e) {
+            Core.logInfo("[Photo Pass] Error Locating Frame! Check config!");
+            return null;
         }
-        return null;
     }
 
 

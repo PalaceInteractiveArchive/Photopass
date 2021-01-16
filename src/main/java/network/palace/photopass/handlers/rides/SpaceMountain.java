@@ -19,38 +19,42 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static network.palace.photopass.utils.ImageUtils.convertToBufferedImage;
 import static network.palace.photopass.utils.ImageUtils.resizeImage;
 
 /**
  * @author Tom
- * @since 23/12/2020
+ * @since 28/12/2020
  * @version 1.0.0
  */
 
 public class SpaceMountain {
+    String side;
+    public SpaceMountain(String s) {
+        side = s;
+    }
     Photopass instance = Photopass.getPlugin(network.palace.photopass.Photopass.class);
     FileConfiguration config = instance.getConfig();
-    File smConfigFile = new File(instance.getDataFolder(), File.separator + "rides/sm.yml");
+    File smConfigFile = new File(instance.getDataFolder(), File.separator + "rides/sm" + side + ".yml");
     FileConfiguration rideData = YamlConfiguration.loadConfiguration(smConfigFile);
     public static Integer frameNum = 0;
 
     public synchronized void createRidePhoto(SignActionEvent info) {
-        Bukkit.getScheduler().runTaskAsynchronously(instance, () -> {
+        Core.runTaskAsynchronously(instance, () -> {
             MongoManager mm = new MongoManager();
             if (info.getGroup().hasPassenger()) {
                 info.getGroup().forEach(x -> {
-                    AtomicReference<Boolean> upload = new AtomicReference<>(true);
-                    x.getEntity().getPlayerPassengers().forEach(y -> {
-                        if (mm.checkToggle(y)) {
-                            requestSMPhoto(y.getDisplayName(), y, upload.get(), x.getEntity().getPlayerPassengers());
-                            if (upload.get()) {
-                                upload.set(false);
+                    if (x.getEntity().getPlayerPassengers().size() != 0) {
+                        ArrayList<String> names = new ArrayList<String>();
+                        x.getEntity().getPlayerPassengers().forEach(user -> {
+                            if (mm.checkToggle(user)) {
+                                names.add(user.getDisplayName());
                             }
-                        }
-                    });
+                        });
+                        String namesList = String.join(",", names);
+                        requestSMPhoto(true, x.getEntity().getPlayerPassengers(), namesList);
+                    }
                 });
             } else {
                 Core.logInfo("[PhotoPass] Train was empty, generating empty");
@@ -58,15 +62,18 @@ public class SpaceMountain {
         });
     }
 
-    private void requestSMPhoto(String name, Player p, Boolean uploadImgur, List<Player> players) {
+    private void requestSMPhoto(Boolean uploadImgur, List<Player> players, String namesList) {
         MapRender makeMap = new MapRender();
-        Image img = makeMap.getImageFromAPI("SpaceMountain", name, config.getString("apiAccess"));
+        Core.logInfo(namesList);
+        Image img = makeMap.getImageFromAPI("SpaceMountain", namesList, config.getString("apiAccess"));
         BufferedImage buffImg =  convertToBufferedImage(resizeImage(img, 128, 128));
         Location frameLoc = new Location(Bukkit.getWorld(rideData.getString("world")), rideData.getDouble("frames." + frameNum.toString() + ".x"), rideData.getDouble("frames." + frameNum.toString() + ".y"), rideData.getDouble("frames." + frameNum.toString() + ".z"));
         makeMap.generatePhoto(frameLoc, buffImg);
-        ChatUtil.sendPhotopassMessage(p, "Smile! Your Photo will be available at the exit!");
+        players.forEach(user -> {
+            ChatUtil.sendPhotopassMessage(user, "Smile! Your Photo will be available at the exit!");
+        });
         frameNum++;
-        if (frameNum > 11) {
+        if (frameNum > 3) {
             frameNum = 0;
         }
         if (uploadImgur) {

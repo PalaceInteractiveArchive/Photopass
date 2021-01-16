@@ -19,7 +19,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static network.palace.photopass.utils.ImageUtils.convertToBufferedImage;
 import static network.palace.photopass.utils.ImageUtils.resizeImage;
@@ -38,7 +37,7 @@ public class TestTrack {
     public static Integer frameNum = 0;
 
     public synchronized void createRidePhoto(SignActionEvent info) {
-        Bukkit.getScheduler().runTaskAsynchronously(instance, () -> {
+        Core.runTaskAsynchronously(instance, () -> {
             MongoManager mm = new MongoManager();
             if (info.getGroup().hasPassenger()) {
                 info.getGroup().forEach(x -> {

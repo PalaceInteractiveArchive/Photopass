@@ -29,14 +29,30 @@ public class SignTakePhoto extends SignAction {
         if (info.isTrainSign() && info.isAction(SignActionType.REDSTONE_ON, SignActionType.GROUP_ENTER) && info.hasGroup()) {
             switch (info.getLine(2)) {
                 case "sm":
-                    Core.logInfo("[Photo Pass] Generating Ridephoto for 'sm'");
-                    SpaceMountain sm = new SpaceMountain();
+                    Core.logInfo("[Photo Pass] Generating Ridephoto for 'sm2'");
+                    String side = info.getLine(3);
+                    SpaceMountain sm = new SpaceMountain(side);
                     sm.createRidePhoto(info);
                     break;
                 case "tt":
                     Core.logInfo("[Photo Pass] Generating Ridephoto for 'tt'");
                     TestTrack tt = new TestTrack();
                     tt.createRidePhoto(info);
+                    break;
+                case "hm":
+                    Core.logInfo("[Photo Pass] Generating Ridephoto for 'hm'");
+                    HauntedMansion hm = new HauntedMansion();
+                    hm.createRidePhoto(info);
+                    break;
+                case "buzz":
+                    Core.logInfo("[Photo Pass] Generating Ridephoto from 'buzz'");
+                    BuzzLightyear bz = new BuzzLightyear();
+                    bz.createRidePhoto(info);
+                    break;
+                case "rrc":
+                    Core.logInfo("[Photo Pass] Generating Ridephoto from 'rrc'");
+                    RockNRoller rrc = new RockNRoller();
+                    rrc.createRidePhoto(info);
                     break;
                 default:
                     Core.logInfo("[Photo Pass] Photopass sign with invalid setup: " + info.getLine(2));
