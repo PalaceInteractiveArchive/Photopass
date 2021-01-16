@@ -15,7 +15,7 @@ import org.bukkit.configuration.file.FileConfiguration;
  * @version 1.0.0
  */
 
-@PluginInfo(name = "PhotoPass", version = "1.0.0", depend = {"Core", "Train_Carts", "BKCommonLib"}, canReload = false)
+@PluginInfo(name = "PhotoPass", version = "1.1.0", depend = {"Core", "Train_Carts", "BKCommonLib"}, canReload = false)
 public class Photopass extends Plugin {
     @Getter private static Photopass instance;
 
