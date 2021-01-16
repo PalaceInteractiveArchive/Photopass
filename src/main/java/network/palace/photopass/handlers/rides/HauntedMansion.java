@@ -41,16 +41,16 @@ public class HauntedMansion {
             MongoManager mm = new MongoManager();
             if (info.getGroup().hasPassenger()) {
                 info.getGroup().forEach(x -> {
+                    ArrayList<String> names = new ArrayList<String>();
                     if (x.getEntity().getPlayerPassengers().size() != 0) {
-                        ArrayList<String> names = new ArrayList<String>();
                         x.getEntity().getPlayerPassengers().forEach(user -> {
                             if (mm.checkToggle(user)) {
                                 names.add(user.getDisplayName());
                             }
                         });
-                        String namesList = String.join(",", names);
-                        requestHmPhoto(true, x.getEntity().getPlayerPassengers(), namesList);
                     }
+                    String namesList = String.join(",", names);
+                    requestHmPhoto(true, x.getEntity().getPlayerPassengers(), namesList);
                 });
             } else {
                 Core.logInfo("[PhotoPass] Train was empty, generating empty");
