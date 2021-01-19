@@ -8,6 +8,8 @@ import com.bergerkiller.bukkit.tc.signactions.SignActionType;
 import com.bergerkiller.bukkit.tc.utils.SignBuildOptions;
 
 import network.palace.core.Core;
+import network.palace.core.player.CPlayer;
+import network.palace.core.player.Rank;
 import network.palace.photopass.handlers.rides.*;
 
 /**
@@ -63,12 +65,18 @@ public class SignTakePhoto extends SignAction {
 
     @Override
     public boolean build(SignChangeActionEvent event) {
-        return SignBuildOptions.create()
-                .setPermission(Permission.BUILD_SPAWNER) // We don't have a specific permission, so putting it under this will do (for now)
-                .setName("PhotoPass Sign")
-                .setDescription("generate a photo based on the parsed arguments")
-                .setHelpURL("https://tomr.dev/pal/tcc/photopass")
-                .handle(event.getPlayer());
+        CPlayer p = (CPlayer) event.getPlayer();
+        if (p.getRank().getRankId() <= Rank.DEVELOPER.getRankId()) {
+            return SignBuildOptions.create()
+                    .setPermission(Permission.BUILD_SPAWNER) // We don't have a specific permission, so putting it under this will do (for now)
+                    .setName("PhotoPass Sign")
+                    .setDescription("generate a photo based on the parsed arguments")
+                    .setHelpURL("https://tomr.dev/pal/tcc/photopass")
+                    .handle(event.getPlayer());
+        } else {
+            p.sendMessage("Please don't try to place these. You do not have permission");
+            return false;
+        }
     }
 
     @Override
