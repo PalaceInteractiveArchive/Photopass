@@ -11,6 +11,7 @@ import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.bukkit.entity.Player;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,6 +33,7 @@ public class MongoManager {
         Document photo = new Document("_id", new ObjectId());
         photo.append("url", new BsonString(url))
                 .append("players", players)
+                .append("timestamp", Instant.now().getEpochSecond())
                 .append("info", new BsonString(info));
         photosCollection.insertOne(photo);
     }
