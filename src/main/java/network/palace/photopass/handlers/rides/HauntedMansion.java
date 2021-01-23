@@ -50,7 +50,11 @@ public class HauntedMansion {
                         });
                     }
                     String namesList = String.join(",", names);
-                    requestHmPhoto(true, x.getEntity().getPlayerPassengers(), namesList);
+                    if (!namesList.equals("")) {
+                        requestHmPhoto(true, x.getEntity().getPlayerPassengers(), namesList);
+                    } else {
+                        Core.logInfo("[PhotoPass] Train was empty");
+                    }
                 });
             } else {
                 Core.logInfo("[PhotoPass] Train was empty, generating empty");

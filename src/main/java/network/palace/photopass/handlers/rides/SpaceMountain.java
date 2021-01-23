@@ -30,17 +30,14 @@ import static network.palace.photopass.utils.ImageUtils.resizeImage;
  */
 
 public class SpaceMountain {
-    String side;
-    public SpaceMountain(String s) {
-        side = s;
-    }
     Photopass instance = Photopass.getPlugin(network.palace.photopass.Photopass.class);
     FileConfiguration config = instance.getConfig();
-    File smConfigFile = new File(instance.getDataFolder(), File.separator + "rides/sm" + side + ".yml");
+    File smConfigFile = new File(instance.getDataFolder(), File.separator + "rides/sm1.yml");
     FileConfiguration rideData = YamlConfiguration.loadConfiguration(smConfigFile);
     public static Integer frameNum = 0;
 
     public synchronized void createRidePhoto(SignActionEvent info) {
+        Core.logInfo(smConfigFile.getAbsolutePath());
         Core.runTaskAsynchronously(instance, () -> {
             MongoManager mm = new MongoManager();
             if (info.getGroup().hasPassenger()) {
@@ -54,7 +51,11 @@ public class SpaceMountain {
                         });
                     }
                     String namesList = String.join(",", names);
-                    requestSMPhoto(true, x.getEntity().getPlayerPassengers(), namesList);
+                    if (!namesList.equals("")) {
+                        requestSMPhoto(true, x.getEntity().getPlayerPassengers(), namesList);
+                    } else {
+                        Core.logInfo("[PhotoPass] Train was empty");
+                    }
                 });
             } else {
                 Core.logInfo("[PhotoPass] Train was empty, generating empty");

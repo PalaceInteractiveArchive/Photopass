@@ -11,6 +11,7 @@ import network.palace.core.Core;
 import network.palace.core.player.CPlayer;
 import network.palace.core.player.Rank;
 import network.palace.photopass.handlers.rides.*;
+import org.bukkit.entity.Player;
 
 /**
  * @author Tom
@@ -31,10 +32,17 @@ public class SignTakePhoto extends SignAction {
         if (info.isTrainSign() && info.isAction(SignActionType.REDSTONE_ON, SignActionType.GROUP_ENTER) && info.hasGroup()) {
             switch (info.getLine(2)) {
                 case "sm":
-                    Core.logInfo("[Photo Pass] Generating Ridephoto for 'sm2'");
+                    Core.logInfo("[Photo Pass] Generating Ridephoto for 'sm'");
                     String side = info.getLine(3);
-                    SpaceMountain sm = new SpaceMountain(side);
-                    sm.createRidePhoto(info);
+                    if (side.equals("1")) {
+                        SpaceMountain sm = new SpaceMountain();
+                        sm.createRidePhoto(info);
+                    } else if (side.equals("2")) {
+                        SpaceMountain2 sm2 = new SpaceMountain2();
+                        sm2.createRidePhoto(info);
+                    } else {
+                        Core.logInfo("Error. SM side was not specified");
+                    }
                     break;
                 case "tt":
                     Core.logInfo("[Photo Pass] Generating Ridephoto for 'tt'");
@@ -65,8 +73,9 @@ public class SignTakePhoto extends SignAction {
 
     @Override
     public boolean build(SignChangeActionEvent event) {
-        CPlayer p = (CPlayer) event.getPlayer();
-        if (p.getRank().getRankId() <= Rank.DEVELOPER.getRankId()) {
+        Player pSpigot = event.getPlayer();
+        CPlayer p = Core.getPlayerManager().getPlayer(pSpigot);
+        if (p.getRank().getRankId() >= Rank.COORDINATOR.getRankId()) {
             return SignBuildOptions.create()
                     .setPermission(Permission.BUILD_SPAWNER) // We don't have a specific permission, so putting it under this will do (for now)
                     .setName("PhotoPass Sign")

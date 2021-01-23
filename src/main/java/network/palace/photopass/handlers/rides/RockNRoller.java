@@ -50,7 +50,11 @@ public class RockNRoller {
                         });
                     }
                     String namesList = String.join(",", names);
-                    requestRRCPhoto(true, x.getEntity().getPlayerPassengers(), namesList);
+                    if (!namesList.equals("")) {
+                        requestRRCPhoto(true, x.getEntity().getPlayerPassengers(), namesList);
+                    } else {
+                        Core.logInfo("[PhotoPass] Train was empty");
+                    }
                 });
             } else {
                 Core.logInfo("[PhotoPass] Train was empty, generating empty");

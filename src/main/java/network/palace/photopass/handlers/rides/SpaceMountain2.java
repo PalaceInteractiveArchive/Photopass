@@ -25,36 +25,37 @@ import static network.palace.photopass.utils.ImageUtils.resizeImage;
 
 /**
  * @author Tom
- * @since 15/01/2021
+ * @since 28/12/2020
  * @version 1.0.0
  */
 
-public class BuzzLightyear {
+public class SpaceMountain2 {
     Photopass instance = Photopass.getPlugin(network.palace.photopass.Photopass.class);
     FileConfiguration config = instance.getConfig();
-    File buzzConfigFile = new File(instance.getDataFolder(), File.separator + "rides/buzz.yml");
-    FileConfiguration rideData = YamlConfiguration.loadConfiguration(buzzConfigFile);
+    File smConfigFile = new File(instance.getDataFolder(), File.separator + "rides/sm2.yml");
+    FileConfiguration rideData = YamlConfiguration.loadConfiguration(smConfigFile);
     public static Integer frameNum = 0;
 
     public synchronized void createRidePhoto(SignActionEvent info) {
+        Core.logInfo(smConfigFile.getAbsolutePath());
         Core.runTaskAsynchronously(instance, () -> {
             MongoManager mm = new MongoManager();
             if (info.getGroup().hasPassenger()) {
                 info.getGroup().forEach(x -> {
-                    ArrayList<String> names = new ArrayList<String>();
-                    if (x.getEntity().getPlayerPassengers().size() != 0) {
-                        x.getEntity().getPlayerPassengers().forEach(user -> {
-                            if (mm.checkToggle(user)) {
-                                names.add(user.getDisplayName());
-                            }
-                        });
-                    }
-                    String namesList = String.join(",", names);
-                    if (!namesList.equals("")) {
-                        requestBuzzPhoto(true, x.getEntity().getPlayerPassengers(), namesList);
-                    } else {
-                        Core.logInfo("[PhotoPass] Train was empty");
-                    }
+                        ArrayList<String> names = new ArrayList<String>();
+                        if (x.getEntity().getPlayerPassengers().size() != 0) {
+                            x.getEntity().getPlayerPassengers().forEach(user -> {
+                                if (mm.checkToggle(user)) {
+                                    names.add(user.getDisplayName());
+                                }
+                            });
+                        }
+                        String namesList = String.join(",", names);
+                        if (!namesList.equals("")) {
+                            requestSMPhoto(true, x.getEntity().getPlayerPassengers(), namesList);
+                        } else {
+                            Core.logInfo("[PhotoPass] Train was empty");
+                        }
                 });
             } else {
                 Core.logInfo("[PhotoPass] Train was empty, generating empty");
@@ -62,10 +63,10 @@ public class BuzzLightyear {
         });
     }
 
-    private void requestBuzzPhoto(Boolean uploadImgur, List<Player> players, String namesList) {
+    private void requestSMPhoto(Boolean uploadImgur, List<Player> players, String namesList) {
         MapRender makeMap = new MapRender();
         Core.logInfo(namesList);
-        Image img = makeMap.getImageFromAPI("BuzzLightyear", namesList, config.getString("apiAccess"));
+        Image img = makeMap.getImageFromAPI("SpaceMountain", namesList, config.getString("apiAccess"));
         BufferedImage buffImg =  convertToBufferedImage(resizeImage(img, 128, 128));
         Location frameLoc = new Location(Bukkit.getWorld(rideData.getString("world")), rideData.getDouble("frames." + frameNum.toString() + ".x"), rideData.getDouble("frames." + frameNum.toString() + ".y"), rideData.getDouble("frames." + frameNum.toString() + ".z"));
         makeMap.generatePhoto(frameLoc, buffImg);
@@ -73,7 +74,7 @@ public class BuzzLightyear {
             ChatUtil.sendPhotopassMessage(user, "Smile! Your Photo will be available at the exit!");
         });
         frameNum++;
-        if (frameNum > 7) {
+        if (frameNum > 3) {
             frameNum = 0;
         }
         if (uploadImgur) {
@@ -85,13 +86,13 @@ public class BuzzLightyear {
                 players.forEach(user -> {
                     playerArr.add(user.getUniqueId().toString());
                 });
-                String info = "Buzz Lightyears Space Ranger Spin on " + Core.getInstanceName() + "! Date of Photo: " + DateFormat.formattedTime();
+                String info = "Space Mountain on " + Core.getInstanceName() + "! Date of Photo: " + DateFormat.formattedTime();
                 MongoManager mm = new MongoManager();
                 mm.createPhoto(url, playerArr, info);
             }
             catch (Exception e) {
                 e.printStackTrace();
-                Core.logInfo("[PhotoPass] Error Uploading Buzz Picture: " + e.getLocalizedMessage());
+                Core.logInfo("[PhotoPass] Error Uploading SpaceMountain Picture: " + e.getLocalizedMessage());
             }
         }
     }

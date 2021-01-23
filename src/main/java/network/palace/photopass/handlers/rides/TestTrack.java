@@ -50,7 +50,11 @@ public class TestTrack {
                     });
                     }
                     String namesList = String.join(",", names);
-                    requestTTPhoto(true, x.getEntity().getPlayerPassengers(), namesList);
+                    if (!namesList.equals("")) {
+                        requestTTPhoto(true, x.getEntity().getPlayerPassengers(), namesList);
+                    } else {
+                        Core.logInfo("[PhotoPass] Train was empty");
+                    }
                 });
             } else {
                 Core.logInfo("[PhotoPass] Train was empty, generating empty");

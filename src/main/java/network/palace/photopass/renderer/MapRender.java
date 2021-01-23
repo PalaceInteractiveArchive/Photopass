@@ -34,7 +34,23 @@ public class MapRender
     {
         try
         {
+            if (pString == "") {
+                return null;
+            }
             return ImageIO.read(new URL("https://internal-api.palace.network/minecraft/ridephoto/create/" + rideName + "/" + pString + "?access=" + accessToken));
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Image getEmptyImageFromAPI(String rideName,String accessToken)
+    {
+        try
+        {
+            return ImageIO.read(new URL("https://internal-api.palace.network/minecraft/ridephoto/createEmpty/" + rideName + "?access=" + accessToken));
         }
         catch (Exception e)
         {
@@ -73,7 +89,7 @@ public class MapRender
             {
                 Entity e = arrayOfEntity[i];
                 if (((e instanceof ItemFrame)) &&
-                        (e.getLocation().getBlock().getLocation().distance(loc) <= 0.9D)) {
+                        (e.getLocation().getBlock().getLocation().distance(loc) <= 0.5D)) {
                     return (ItemFrame)e;
                 }
             }
