@@ -13,7 +13,7 @@ import org.bukkit.ChatColor;
  * @since 04/01/2021
  * @version 1.0.0
  */
-@CommandMeta(description = "Command used to manage PhotoPass", rank = Rank.SETTLER, aliases = {"pp"})
+@CommandMeta(description = "Command used to manage PhotoPass", rank = Rank.GUEST, aliases = {"pp"})
 public class PhotoPassCommand extends CoreCommand {
     public PhotoPassCommand() {
         super("photopass");
